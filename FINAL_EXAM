@@ -1,0 +1,58 @@
+# Exploring variability of soil moisture and soil change in Scotland (2017-2024)
+# Focus on the southern Highlands (Inverness)
+
+# ----------------
+# Summary:
+# 01 Preliminary work (importing packages and setting the working directory)
+# 02 Soil moisture variability
+
+
+# ----------------
+
+# 01
+# loading previously downloaded packages, if the packages are not installed use install.packages("") 
+library(ncdf4)
+library(terra)
+library(imageRy)
+library(ggplot2)
+library(patchwork)
+
+# setting the working directory to the folder with the downloaded data
+setwd("C:/Users/giuli/Desktop/prova3")
+
+# ----------------
+
+# 02
+# load the raster file for the year 2024 and plot it to see it
+soilm2024 <- rast("c_gls_SSM1km_202405250000_CEURO_S1CSAR_V1.2.1__ssm.nc")
+plot(soilm2024)
+
+# change the colour so that arid areas are in warm colours and the moister ones are in cooler tones, then plot it again
+cl <- colorRampPalette(c("red", "orange", "lightblue")) (100)
+plot(soilm2024, col=cl)
+
+# crop the image to the desired area
+ext <- c(-5, -1.5, 56, 58.75) 
+soilm2024c <- crop(soilm2024, ext) 
+
+# plot the cropped data with the new colour scheme
+plot(soilm2024c, col=cl)
+
+# re-do all the previous passages for the year 2017
+soilm2017 <- rast("c_gls_SSM1km_201705250000_CEURO_S1CSAR_V1.1.1__ssm.nc")
+plot(soilm2017)
+soilm2017c<- crop(soilm2017, ext)
+plot(soilm2017c, col=cl)
+
+# divide the plotting window into two to create two plots of the soil moisture data one next to the other, then name them
+par(mfrow=c(1,2))
+plot(soilm2017c, main = "Soil Moisture May 2017", col=cl)
+plot(soilm2024c, main = "Soil Moisture May 2024", col=cl)
+
+# remove the division of the plotting window
+dev.off()
+
+# create a new colour scheme and calculate visually the difference in soil moisture between the two years, then plot
+cld <- colorRampPalette(c("white", "white", "blue")) (100)
+soilmdiff <- (soilm2017c-soilm2024c)
+plot(soilmdiff, col=cld)
