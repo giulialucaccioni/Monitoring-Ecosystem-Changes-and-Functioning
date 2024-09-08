@@ -1,0 +1,285 @@
+\documentclass[10pt]{beamer}
+\hypersetup{pdfpagemode=FullScreen}
+\usetheme{Szeged}
+\usepackage{graphicx} % Required for inserting images
+\usecolortheme{dolphin}
+%\usefonttheme{serif}
+\usepackage{microtype}
+%\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{breqn}
+\usepackage{empheq}
+\usepackage{tensor}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{transparent}
+\usepackage{fontenc}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{ragged2e}
+
+% set colors
+\definecolor{myNewColorA}{RGB}{91, 154, 186} %gray-blue
+\definecolor{myNewColorB}{RGB}{0, 51, 102} %darkblue
+\definecolor{myNewColorC}{RGB}{226,182,0}
+\setbeamercolor*{palette primary}{bg=myNewColorA, fg=white}
+\setbeamercolor*{palette secondary}{bg=myNewColorB, fg=white}
+\setbeamercolor*{palette tertiary}{bg=myNewColorB, fg=white}
+\setbeamercolor*{titlelike}{fg=myNewColorA}
+\setbeamercolor*{title}{bg=myNewColorA, fg=white}
+\setbeamercolor*{item}{fg=myNewColorA}
+\setbeamercolor*{caption name}{fg=myNewColorA}
+
+\newenvironment{tres important}[2][]{
+	\setkeys{EmphEqEnv}{#2}
+	\setkeys{EmphEqOpt}{box={\setlength{\fboxsep}{10pt}\fcolorbox{myNewColorA}{white}},#1}
+	\EmphEqMainEnv}
+{\endEmphEqMainEnv}
+
+%  ----------------------
+\titlegraphic{\includegraphics[height=1.5cm]{lab/logo.png}}
+
+\setbeamerfont{title}{size=\large}
+\setbeamerfont{subtitle}{size=\small}
+\setbeamerfont{author}{size=\medium}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{institute}{size=\small}
+
+\title[Inverness soil variability 2017-2024]{Exploring variability of soil moisture\\
+and soil use in Scotland (2017-2024)}
+\subtitle{Focus on the Southern Highlands (Inverness)}
+\author[Giulia Lucaccioni]{Giulia Lucaccioni}
+\institute[UniBo] {Alma Mater Studiorum\\Università di Bologna}
+\date{September 2024}
+
+% --------------------------
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Contents}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=false,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+  }
+% ---------------------------------
+
+\begin{document}
+
+\begin{frame}
+         \titlepage
+\end{frame}
+
+        \begin{frame}
+            \frametitle{Outline}
+            \tableofcontents%[currentsection]
+        \end{frame}
+
+%\maketitle
+
+ \section{Introduction}
+
+     \begin{frame}{Aim of the project}
+        \centering
+          The aim of this project consists of a multi-temporal analysis of soil moisture and soil use in the Southern Highlands area, around the Cairngorms National Park (GB-SCT).
+        \includegraphics[width=0.75\textwidth]{lab/scotland.jpg}
+     \end{frame}
+
+      \begin{frame}{Case study}
+        \justify
+         The work was divided into two steps:\\
+         \begin{enumerate}
+             \item Soil moisture analysis
+             \item Snow coverage variation (NDSI computation)    
+         \end{enumerate}
+         both between February 2017 and February 2024.\\
+     \vspace{0.3cm}
+        The former investigation offers a visual result through images downloaded from Land Copernicus, while the latter compares snow coverage using data taken from Sentinel-2 Copernicus.
+    \end{frame}
+
+    \begin{frame}{Work plan}
+        \begin{enumerate}
+            \item Download data
+                \begin{itemize}
+                    \item \href{https://land.copernicus.eu/en/products/soil-moisture/daily-surface-soil-moisture-v1.0}{Surface Soil Moisture 2014-present} on Land Copernicus;
+                    \item                    \href{https://zipper.dataspace.copernicus.eu/odata/v1/Products(0d30ca20-ca3a-4b42-af48-614a9521963c)/$value}{2017 Sentinel-2 data} and \href{https://zipper.dataspace.copernicus.eu/odata/v1/Products(9f70683d-3c81-41de-9864-eaed1978a702)/$value}{2024 Sentinel-2 data} on Data Space Copernicus
+                \end{itemize}
+            \item Compute soil moisture variation visually
+                \begin{itemize}
+                    \item Subtract soil moisture data of 2024 to the data of 2017
+                \end{itemize}
+            \item Compute snow coverage variation
+                \begin{itemize}
+                    \item Compute Normalized Difference Snow Index
+                    \item Define thresholds for snow presence and absence and create clusters
+                    \item Calculate the frequency of the clusters
+                \end{itemize}
+        \end{enumerate}
+    \end{frame}
+
+\section{Soil moisture variation}
+    \begin{frame}{Comparison}
+    \begin{figure}
+        \begin{minipage}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lab/soilm_2017_col.png}
+        \end{minipage}\hfill
+        \begin{minipage}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lab/soilm_2024_col.png}
+        \end{minipage}
+    \end{figure}
+    \centering
+    The more arid the area is, the warmer the colour. 
+    \end{frame}
+
+    \begin{frame}{Difference}
+        \begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{lab/soilm_diff.png}
+    \caption{Difference between 2017 and 2024\\
+    \tiny - white areas = no significant variations\\
+    \tiny - blue areas = less moisture than in 2017}
+        \end{figure}
+    \end{frame}
+
+\section{Snow coverage variation}
+    \begin{frame}{Sentinel-2 bands}
+        \justify
+        Satellite images have 13 Sentinel-2 bands in total that can be combined to better understand the features in imagery. The ones used in this case study are:
+        \begin{itemize}
+            \item B02 (blue)
+            \item B03 (green)
+            \item B04 (red)
+            \item B08 (visible and near-infrared (VNIR))
+            \item B11 (short wave infrared (SWIR))
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{NDSI}
+        \justify
+        The NDSI (Normalized Difference Snow Index) is a ratio of two bands: one in the VIR (Band 3) and one in the SWIR (Band 11); it can help highlight snow-covered areas in remote sensing imagery. \\
+    \vspace{0.3cm}
+    It ranges from -1 to 1:  
+    \begin{itemize}
+        \item \textbf{Positive values} (\textgreater 0.4) = snow-covered areas\\
+        \item \textbf{Values close to 0} (\( 0 \leq x \leq 0.4 \)) = mixture snow-other\\
+        \item \textbf{Negative values} (\textless 0) = abundant vegetation
+    \end{itemize}
+    \vspace{0.3cm}
+    The formula used is the following:\\
+           \begin{equation}
+          NDSI = \frac{B03 - B11}{B03 + B11} =\frac{green - SWIR}{green + SWIR}
+           \end{equation}
+     \end{frame}
+
+    \begin{frame}{NDSI computation}
+        \begin{figure}
+        \begin{minipage}{0.5\textwidth}
+            \includegraphics[width=\textwidth]{lab/NDSI_2017_col.png}
+        \end{minipage}\hfill
+        \begin{minipage}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lab/NDSI_2024_col.png}
+        \end{minipage}
+        \caption{NDSI for both years shown on the map\\
+            \tiny - purple indicates snow\\
+            \tiny - beige and orange indicate a mixture\\
+            \tiny - green indicates vegetation}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{NDSI difference}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\linewidth]{lab/NDSI_diff.png}
+            \caption{NDSI difference calculated between the years 2017 and 2024\\
+            \tiny - the purple areas indicate a positive difference: this means there was more snow in 2017\\
+            \tiny - the white areas indicate no significant variations\\
+            \tiny - the green ones indicate a negative difference: there was less snow in those areas in 2017}
+            \label{fig:enter-label}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Histograms}
+        \begin{figure}
+        \includegraphics[width=0.55\linewidth]{lab/hist_2017.png} \hfill
+        \includegraphics[width=0.55\linewidth]{lab/hist_2024.png} \hfill
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Histograms}
+        \begin{figure}
+        \includegraphics[width=\linewidth]{lab/hist_diff.png}  \hfill %\caption{NDSI histograms}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Thresholds and clusters}
+        Based on the values that NDSI can assume, I established 3 thresholds in R in order to create 3 clusters.
+        \begin{figure}
+        \begin{minipage}{0.5\textwidth}
+            \includegraphics[width=\textwidth]{lab/clus_2017.png}
+        \end{minipage}\hfill
+        \begin{minipage}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lab/clus_2024.png}
+        \end{minipage}
+        \caption{Clusters based on the thresholds' values\\
+            \tiny - 0 (green): vegetation, values \textless 0;\\
+            \tiny - 2 (beige): mixture, values \( 0 \leq x \leq 0.4 \);\\
+            \tiny - 3 (purple): snow, values \textgreater 0.}
+        \end{figure}
+    \end{frame}
+
+    \begin{frame}{Clusters frequency distribution}
+         \justify
+         To create graphs of the frequency distribution of the clusters and calculate their percentage, I extracted the total number of pixels and then plotted the data.
+        \begin{figure}
+        \begin{minipage}{0.5\textwidth}
+            \includegraphics[width=\textwidth]{lab/clus_dis_2017.png}
+        \end{minipage}\hfill
+        \begin{minipage}{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{lab/clus_dis_2024.png}
+        \end{minipage}
+        \caption{Graphs based on the percentage of snow, mixture, and vegetation\\
+        \small - 2017: snow \SI{30}{\percent} ; mixture: \SI{24.5}{\percent} ; no-snow: \SI{45.4}{\percent}\\
+        \small - 2024: snow \SI{11.7}{\percent} ; mixture: \SI{31.9}{\percent} ; no-snow: \SI{53.8}{\percent}}
+        \end{figure}
+    \end{frame}
+
+\section{Conclusions}
+    \begin{frame}{Final considerations}
+    \justify
+    The second part of this analysis highlights a decrease in snow coverage in the last seven years. In particular, we can see how the NDSI values towards 0 (absence of snow/mixture) increase while the negative and the positive ones (vegetation, snow) don't.\\
+    \vspace{0.3cm}
+    This explains, at least in part, the first part of the project, which shows a clear decrease in soil moisture between 2017 and 2024: less snow coverage means that there is less volume of water that can enter the soil once the snow melts.\\
+    \vspace{0.3cm}
+    More in-depth studies could certainly explain the variation in soil moisture with more clarity, taking into account other features like elevation, precipitation, and evapotranspiration.
+    \end{frame}
+
+\section{Bibliography}
+    \begin{frame}{References}
+        \begin{itemize}
+            \item \href{https://r-graph-gallery.com/42-colors-names.html}{An overview of color names in R};
+            \item \href{https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/ndsi/}{Normalized Difference Snow Index, NDSI};
+            \item \href{https://gisgeography.com/sentinel-2-bands-combinations/#:~:text=This%20sensor%20delivers%2013%20spectral,have%20a%2010%2Dmeter%20resolution.}{Sentinel 2 Bands and Combinations};
+            \item \href{https://ggplot2-book.org/}{ggplot2: Elegant Graphics for Data Analysis (3e)};
+            \item \href{https://land.copernicus.eu/}{Land Copernicus Browser};
+            \item \href{https://browser.dataspace.copernicus.eu//}{Data Space Copernicus Browser};
+            \item \href{https://github.com/giulialucaccioni/Monitoring-Ecosystem-Changes-and-Functioning/blob/main/FINAL_PROJECT}{Code available on GitHub}.
+        \end{itemize}
+    \end{frame}
+
+
+\end{document}
