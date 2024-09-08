@@ -132,8 +132,8 @@ plot(diff)
 col_new2 <- colorRampPalette(c("darkgreen", "bisque", "darkslateblue"))(100)
 plot(diff, col=col_new2, main = "NDSI Difference (2017 - 2024)")
 # the purple areas indicate a positive difference: this means there was more snow in 2017
-# the white areas indicate no significance variations 
-# the green ones indicate negative difference: there was less snow in those areasin 2017 
+# the white areas indicate no significant variations 
+# the green ones indicate a negative difference: there was less snow in those areas in 2017 
 
 # plot histograms to see snow frequency in the two years and their difference
 hist(NDSI17, col= c("darkslategray2"), main= "Snow frequency in 2017", xlab = "NDSI")
@@ -183,7 +183,7 @@ p2017 <- f2017 * 100 / tot2017
 p2017
 # snow:30% ; mixture: 24.5% ; no-snow: 45.4%
 
-# calculate percentage of 2024
+# calculate the percentage of 2024
 f2024 <- freq(clusters24)
 f2024
 
