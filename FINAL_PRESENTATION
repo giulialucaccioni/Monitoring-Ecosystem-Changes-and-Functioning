@@ -173,7 +173,7 @@ and soil use in Scotland (2017-2024)}
     It ranges from -1 to 1:  
     \begin{itemize}
         \item \textbf{Positive values} (\textgreater 0.4) = snow-covered areas\\
-        \item \textbf{Values close to 0} (\( 0 \leq x \leq 0.4 \)) = mixture snow-other\\
+        \item \textbf{Values close to 0} (\( 0 \leq x \leq 0.4 \)) = mixture snow-other or absence of snow\\
         \item \textbf{Negative values} (\textless 0) = abundant vegetation
     \end{itemize}
     \vspace{0.3cm}
@@ -194,7 +194,7 @@ and soil use in Scotland (2017-2024)}
         \end{minipage}
         \caption{NDSI for both years shown on the map\\
             \tiny - purple indicates snow\\
-            \tiny - beige and orange indicate a mixture\\
+            \tiny - beige and orange indicate a mixture/no-snow\\
             \tiny - green indicates vegetation}
         \end{figure}
     \end{frame}
@@ -236,7 +236,7 @@ and soil use in Scotland (2017-2024)}
         \end{minipage}
         \caption{Clusters based on the thresholds' values\\
             \tiny - 0 (green): vegetation, values \textless 0;\\
-            \tiny - 2 (beige): mixture, values \( 0 \leq x \leq 0.4 \);\\
+            \tiny - 2 (beige): mixture/no-snow, values \( 0 \leq x \leq 0.4 \);\\
             \tiny - 3 (purple): snow, values \textgreater 0.}
         \end{figure}
     \end{frame}
@@ -273,13 +273,12 @@ and soil use in Scotland (2017-2024)}
         \begin{itemize}
             \item \href{https://r-graph-gallery.com/42-colors-names.html}{An overview of color names in R};
             \item \href{https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/ndsi/}{Normalized Difference Snow Index, NDSI};
-            \item \href{https://gisgeography.com/sentinel-2-bands-combinations/#:~:text=This%20sensor%20delivers%2013%20spectral,have%20a%2010%2Dmeter%20resolution.}{Sentinel 2 Bands and Combinations};
+            \item \href{https://gisgeography.com/sentinel-2-bands-combinations/}{Sentinel 2 Bands and Combinations};
             \item \href{https://ggplot2-book.org/}{ggplot2: Elegant Graphics for Data Analysis (3e)};
             \item \href{https://land.copernicus.eu/}{Land Copernicus Browser};
             \item \href{https://browser.dataspace.copernicus.eu//}{Data Space Copernicus Browser};
             \item \href{https://github.com/giulialucaccioni/Monitoring-Ecosystem-Changes-and-Functioning/blob/main/FINAL_PROJECT}{Code available on GitHub}.
         \end{itemize}
     \end{frame}
-
 
 \end{document}
