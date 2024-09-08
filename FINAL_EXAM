@@ -1,11 +1,11 @@
-# Exploring variability of soil moisture and soil use in Scotland (2017-2024)
-# Focus on the Southern Highlands (Inverness)
+# Exploring variability of soil moisture and soil change in Scotland (2017-2024)
+# Focus on the southern Highlands (Inverness)
 
 # ----------------
 # Summary:
 # 01 Preliminary work (importing packages and setting the working directory)
-# 02 Soil moisture variability
-
+# 02 Soil moisture variation
+# 03 Snow coverage variation (NDSI computation)
 
 # ----------------
 
@@ -18,7 +18,7 @@ library(ggplot2)
 library(patchwork)
 
 # setting the working directory to the folder with the downloaded data
-setwd("C:/Users/giuli/Desktop/prova3")
+setwd("C:/Users/giuli/Desktop/scotland_analysis")
 
 # ----------------
 
@@ -56,3 +56,156 @@ dev.off()
 cld <- colorRampPalette(c("white", "white", "blue")) (100)
 soilmdiff <- (soilm2017c-soilm2024c)
 plot(soilmdiff, col=cld)
+
+# ----------------
+
+# 03
+# load the different bands of the Sentinel-2 data for the year 2024
+b2_24 <- rast("T30VVJ_20240511T113321_B02_10m.jp2") #blue
+plot(b2_24)
+
+b3_24 <- rast("T30VVJ_20240511T113321_B03_10m.jp2") #green
+plot(b3_24)
+
+b4_24 <- rast("T30VVJ_20240511T113321_B04_10m.jp2") #red
+plot(b4_24)
+
+b8_24 <- rast("T30VVJ_20240511T113321_B08_10m.jp2") #VNIR
+plot(b8_24)
+
+b11_24 <- rast("T30VVJ_20240511T113321_B11_20m.jp2") #SWIR
+plot(b11_24)
+
+# re-do everything for the year 2017
+b2_17 <- rast("T30VVJ_20170531T114351_B02_10m.jp2") #blue
+plot(b2_17)
+
+b3_17 <- rast("T30VVJ_20170531T114351_B03_10m.jp2") #green
+plot(b3_17)
+
+b4_17 <- rast("T30VVJ_20170531T114351_B04_10m.jp2") #red
+plot(b4_17)
+
+b8_17 <- rast("T30VVJ_20170531T114351_B08_10m.jp2") #VNIR
+plot(b8_17)
+
+b11_17 <- rast("T30VVJ_20170531T114351_B11_20m.jp2") #SWIR
+plot(b11_17)
+
+#check data size
+b11_17
+b11_24
+
+ext(b11_17) == ext(b11_24)
+
+# change resolution and dimension
+b8_24_scaled <- disagg(b8_24, 2)
+plot(b8_24_scaled)
+
+b11_17_scaled <- disagg(b11_17, 2)
+plot(b11_17_scaled)
+
+b11_24_scaled <- disagg(b11_24, 2)
+plot(b11_24_scaled)
+
+# assign new names for NDSI computation
+SWIR24 <- b11_24_scaled
+SWIR17 <- b11_17_scaled
+
+# Calculate NDSI
+NDSI24 <- ((b3_24- SWIR24) / (b3_24 + SWIR24))
+NDSI24
+plot(NDSI24)
+
+col_new <- colorRampPalette(c("darkorchid4", "chocolate1","cornsilk3", "darkolivegreen"))(100)
+plot(NDSI24, col=col_new, main = "Normalized Difference Snow Index (NDSI) 2024" )
+
+NDSI17 <- ((b3_17 - SWIR17) / (b3_17 + SWIR17))
+NDSI17
+plot(NDSI17)
+plot(NDSI17, col=col_new, main= "Normalized Difference Snow Index (NDSI) 2017")
+
+# Compute the difference between the two years
+diff <- NDSI17 - NDSI24
+plot(diff)
+
+col_new2 <- colorRampPalette(c("darkorchid4", "cornsilk", "darkgreen"))(100)
+plot(diff, col=col_new2, main = "NDSI Difference (2017 - 2024) ")
+
+#the green areas indicate a positive difference: this means there was more snow in 2017
+#the white areas indicate no significance variations 
+#the purple ones indicate negative difference: there was less snow in those areas 
+
+# plot histograms to see snow frequency in the two years and their difference
+hist(NDSI17, col= c("orchid4"), main= "Snow frequency in 2017", xlab = "NDSI")
+hist(NDSI24, col= c("orchid4"), main= "Snow frequency in 2024", xlab = "NDSI")
+hist(diff, main = "Differences in Snow coverage", col="darkgreen",  xlab = "NDSI Difference")
+
+# Define the 3 thresholds
+snow_covered <- 0.4
+mixture_covered <- 0
+no_snow <- (-1:0)
+
+# Create binary masks based on the thresholds
+snow_mask <- NDSI17 > snow_covered
+mixture_mask <- NDSI17 > mixture_covered
+
+# Combine the masks to create clusters
+clusters17 <- snow_mask + 2 * mixture_mask
+
+# Visualize the clusters for the image of 2017
+col_clusters <- colorRampPalette(c("green","red", "blue"))(100)
+plot(clusters17, col= col_clusters, main = "Clusters (Snow, Mixture, Vegetation)")
+
+# Same work for 2024
+snow_mask24 <- NDSI24 > snow_covered
+mixture_mask24 <- NDSI24 > mixture_covered
+
+# Combine the masks to create clusters
+clusters24 <- snow_mask24 + 2 * mixture_mask24
+
+# Visualize the clusters for the image of 2024
+plot(clusters24, col= col_clusters, main = "Clusters (Snow, Mixture, Vegetation)" )
+
+par(mfrow=c(1,2))
+plot(clusters17[[1]])
+plot(clusters24[[1]])
+
+dev.off()
+
+# Calculate the frequency and the number of pixels
+f2017 <- freq(clusters17)
+f2017
+
+# let's extract the total number of pixels 
+tot2017 <- ncell(clusters17)
+tot2017
+
+# let's calculate the percentage by dividing by the total number of pixels 
+p2017 <- f2017 * 100 / tot2017
+p2017
+#snow:85.5% ; mixture: 11.3% ; no-snow: 0%
+
+# calculate percentage of 2024
+f2024 <- freq(clusters24)
+f2024
+
+tot2024 <- ncell(clusters24)
+tot2024
+
+p2024 <- f2024 * 100 / tot2024
+p2024
+# snow: 87.7% ; mixture: 12.3% ; no-snow: 0%
+
+# building tables with the percentages 
+class <- c("SNOW", "MIXTURE", "VEGETATION")
+y2017 <- c(85.5, 11.3, 0)
+y2024 <- c(87.7, 12.3, 0)
+
+# with data.frame we create the final table 
+tabout <- data.frame(class, y2017, y2024)
+
+p1 <- ggplot(tabout, aes(x=class, y=y2017, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
+p2 <- ggplot(tabout, aes(x=class, y=y2024, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
+plot(p1)
+plot(p2)
