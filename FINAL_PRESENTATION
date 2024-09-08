@@ -276,9 +276,11 @@ and soil use in Scotland (2017-2024)}
             \item \href{https://gisgeography.com/sentinel-2-bands-combinations/}{Sentinel 2 Bands and Combinations};
             \item \href{https://ggplot2-book.org/}{ggplot2: Elegant Graphics for Data Analysis (3e)};
             \item \href{https://land.copernicus.eu/}{Land Copernicus Browser};
-            \item \href{https://browser.dataspace.copernicus.eu//}{Data Space Copernicus Browser};
-            \item \href{https://github.com/giulialucaccioni/Monitoring-Ecosystem-Changes-and-Functioning/blob/main/FINAL_PROJECT}{Code available on GitHub}.
-        \end{itemize}
+            \item \href{https://browser.dataspace.copernicus.eu//}{Data Space Copernicus Browser}.
+            \end{itemize}
+            \vspace{1cm}
+            \centering
+            \framebox {\href{https://github.com/giulialucaccioni/Monitoring-Ecosystem-Changes-and-Functioning/blob/main/FINAL_PROJECT}{Check out my code on GitHub!}.}
     \end{frame}
 
 \end{document}
