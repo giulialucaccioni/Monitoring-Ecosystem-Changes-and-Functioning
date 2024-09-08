@@ -61,38 +61,38 @@ plot(soilmdiff, main = "Soil Moisture Difference (2017-2024)", col=cld)
 
 # 03
 # load the different bands of the Sentinel-2 data for the year 2024
-b2_24 <- rast("T30VVJ_20240511T113321_B02_10m.jp2") #blue
+b2_24 <- rast("T30VVJ_20240229T114349_B02_10m.jp2") #blue
 plot(b2_24)
 
-b3_24 <- rast("T30VVJ_20240511T113321_B03_10m.jp2") #green
+b3_24 <- rast("T30VVJ_20240229T114349_B03_10m.jp2") #green
 plot(b3_24)
 
-b4_24 <- rast("T30VVJ_20240511T113321_B04_10m.jp2") #red
+b4_24 <- rast("T30VVJ_20240229T114349_B04_10m.jp2") #red
 plot(b4_24)
 
-b8_24 <- rast("T30VVJ_20240511T113321_B08_10m.jp2") #VNIR
+b8_24 <- rast("T30VVJ_20240229T114349_B08_10m.jp2") #VNIR
 plot(b8_24)
 
-b11_24 <- rast("T30VVJ_20240511T113321_B11_20m.jp2") #SWIR
+b11_24 <- rast("T30VVJ_20240229T114349_B11_20m.jp2") #SWIR
 plot(b11_24)
 
 # re-do everything for the year 2017
-b2_17 <- rast("T30VVJ_20170531T114351_B02_10m.jp2") #blue
+b2_17 <- rast("T30VVJ_20170227T113311_B02_10m.jp2") #blue
 plot(b2_17)
 
-b3_17 <- rast("T30VVJ_20170531T114351_B03_10m.jp2") #green
+b3_17 <- rast("T30VVJ_20170227T113311_B03_10m.jp2") #green
 plot(b3_17)
 
-b4_17 <- rast("T30VVJ_20170531T114351_B04_10m.jp2") #red
+b4_17 <- rast("T30VVJ_20170227T113311_B04_10m.jp2") #red
 plot(b4_17)
 
-b8_17 <- rast("T30VVJ_20170531T114351_B08_10m.jp2") #VNIR
+b8_17 <- rast("T30VVJ_20170227T113311_B08_10m.jp2") #VNIR
 plot(b8_17)
 
-b11_17 <- rast("T30VVJ_20170531T114351_B11_20m.jp2") #SWIR
+b11_17 <- rast("T30VVJ_20170227T113311_B11_20m.jp2") #SWIR
 plot(b11_17)
 
-#check data size
+# check size
 b11_17
 b11_24
 
@@ -112,12 +112,12 @@ plot(b11_24_scaled)
 SWIR24 <- b11_24_scaled
 SWIR17 <- b11_17_scaled
 
-# Calculate NDSI
+# calculate NDSI
 NDSI24 <- ((b3_24- SWIR24) / (b3_24 + SWIR24))
 NDSI24
 plot(NDSI24)
 
-col_new <- colorRampPalette(c("darkorchid4", "chocolate1","cornsilk3", "darkolivegreen"))(100)
+col_new <- colorRampPalette(c("darkgreen", "beige","darkgoldenrod1", "darkslateblue"))(100)
 plot(NDSI24, col=col_new, main = "Normalized Difference Snow Index (NDSI) 2024" )
 
 NDSI17 <- ((b3_17 - SWIR17) / (b3_17 + SWIR17))
@@ -125,66 +125,63 @@ NDSI17
 plot(NDSI17)
 plot(NDSI17, col=col_new, main= "Normalized Difference Snow Index (NDSI) 2017")
 
-# Compute the difference between the two years
+# compute the difference between the two years
 diff <- NDSI17 - NDSI24
 plot(diff)
 
-col_new2 <- colorRampPalette(c("darkorchid4", "cornsilk", "darkgreen"))(100)
-plot(diff, col=col_new2, main = "NDSI Difference (2017 - 2024) ")
-
-#the green areas indicate a positive difference: this means there was more snow in 2017
-#the white areas indicate no significance variations 
-#the purple ones indicate negative difference: there was less snow in those areas 
+col_new2 <- colorRampPalette(c("darkgreen", "bisque", "darkslateblue"))(100)
+plot(diff, col=col_new2, main = "NDSI Difference (2017 - 2024)")
+# the purple areas indicate a positive difference: this means there was more snow in 2017
+# the white areas indicate no significance variations 
+# the green ones indicate negative difference: there was less snow in those areasin 2017 
 
 # plot histograms to see snow frequency in the two years and their difference
-hist(NDSI17, col= c("orchid4"), main= "Snow frequency in 2017", xlab = "NDSI")
-hist(NDSI24, col= c("orchid4"), main= "Snow frequency in 2024", xlab = "NDSI")
-hist(diff, main = "Differences in Snow coverage", col="darkgreen",  xlab = "NDSI Difference")
+hist(NDSI17, col= c("darkslategray2"), main= "Snow frequency in 2017", xlab = "NDSI")
+hist(NDSI24, col= c("darkslategray2"), main= "Snow frequency in 2024", xlab = "NDSI")
+hist(diff, main = "Differences in Snow coverage", col="deepskyblue4",  xlab = "NDSI Difference")
 
-# Define the 3 thresholds
+# define the 3 thresholds
 snow_covered <- 0.4
 mixture_covered <- 0
 no_snow <- (-1:0)
 
-# Create binary masks based on the thresholds
+# create binary masks based on the thresholds
 snow_mask <- NDSI17 > snow_covered
 mixture_mask <- NDSI17 > mixture_covered
 
-# Combine the masks to create clusters
+# combine the masks to create clusters
 clusters17 <- snow_mask + 2 * mixture_mask
 
-# Visualize the clusters for the image of 2017
-col_clusters <- colorRampPalette(c("green","red", "blue"))(100)
-plot(clusters17, col= col_clusters, main = "Clusters (Snow, Mixture, Vegetation)")
+# visualize the clusters for the image of 2017
+col_clusters <- colorRampPalette(c("darkgreen","bisque", "darkslateblue"))(100)
+plot(clusters17, col= col_clusters, main = "Clusters 2017 (Snow, Mixture, Vegetation)")
 
-# Same work for 2024
+# same work for 2024
 snow_mask24 <- NDSI24 > snow_covered
 mixture_mask24 <- NDSI24 > mixture_covered
 
-# Combine the masks to create clusters
 clusters24 <- snow_mask24 + 2 * mixture_mask24
 
-# Visualize the clusters for the image of 2024
-plot(clusters24, col= col_clusters, main = "Clusters (Snow, Mixture, Vegetation)" )
+plot(clusters24, col= col_clusters, main = "Clusters 2024 (Snow, Mixture, Vegetation)")
 
 par(mfrow=c(1,2))
-plot(clusters17[[1]])
-plot(clusters24[[1]])
+plot(clusters17)
+plot(clusters24)
 
 dev.off()
 
-# Calculate the frequency and the number of pixels
+# calculate the frequency and the number of pixels
 f2017 <- freq(clusters17)
 f2017
 
-# let's extract the total number of pixels 
+# extract the total number of pixels 
 tot2017 <- ncell(clusters17)
 tot2017
 
-# let's calculate the percentage by dividing by the total number of pixels 
+# calculate the percentage by dividing by the total number of pixels 
 p2017 <- f2017 * 100 / tot2017
 p2017
-#snow:85.5% ; mixture: 11.3% ; no-snow: 0%
+# snow:30% ; mixture: 24.5% ; no-snow: 45.4%
 
 # calculate percentage of 2024
 f2024 <- freq(clusters24)
@@ -195,17 +192,27 @@ tot2024
 
 p2024 <- f2024 * 100 / tot2024
 p2024
-# snow: 87.7% ; mixture: 12.3% ; no-snow: 0%
+# snow: 11.7% ; mixture: 31.9% ; no-snow: 53.8%
 
-# building tables with the percentages 
+# build the tables with the percentages 
 class <- c("SNOW", "MIXTURE", "VEGETATION")
-y2017 <- c(85.5, 11.3, 0)
-y2024 <- c(87.7, 12.3, 0)
+year_2017 <- c(30, 24.5, 45.4)
+year_2024 <- c(11.7, 31.9, 53.8)
 
-# with data.frame we create the final table 
-tabout <- data.frame(class, y2017, y2024)
+# create the final table with data.frame  
+table <- data.frame(class, year_2017, year_2024)
 
-p1 <- ggplot(tabout, aes(x=class, y=y2017, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
-p2 <- ggplot(tabout, aes(x=class, y=y2024, color=class)) + geom_bar(stat="identity", fill="white") + ylim(c(0,100))
+# plot the two cluster distributions
+p1 <- ggplot(table, aes(x=class, y=year_2017)) +
+  geom_bar(stat="identity", fill= c("cornflowerblue", "darksalmon", "chartreuse4")) +
+  ggtitle("Cluster Distribution 2017") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(c(0,100))
 plot(p1)
+
+p2 <- ggplot(table, aes(x=class, y=year_2024)) +
+  geom_bar(stat="identity", fill= c("blue1", "coral2", "chartreuse3")) +
+  ggtitle("Cluster Distribution 2024") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  ylim(c(0,100))
 plot(p2)
