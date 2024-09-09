@@ -47,8 +47,8 @@
 \setbeamerfont{date}{size=\small}
 \setbeamerfont{institute}{size=\small}
 
-\title[Inverness soil variability 2017-2024]{Exploring variability of soil moisture\\
-and soil use in Scotland (2017-2024)}
+\title[Inverness soil variability 2017-2024]{Exploring the variability of soil moisture\\
+and snow coverage in Scotland (2017-2024)}
 \subtitle{Focus on the Southern Highlands (Inverness)}
 \author[Giulia Lucaccioni]{Giulia Lucaccioni}
 \institute[UniBo] {Alma Mater Studiorum\\Università di Bologna}
@@ -91,7 +91,7 @@ and soil use in Scotland (2017-2024)}
 
      \begin{frame}{Aim of the project}
         \centering
-          The aim of this project consists of a multi-temporal analysis of soil moisture and soil use in the Southern Highlands area, around the Cairngorms National Park (GB-SCT).
+          The aim of this project consists of a multi-temporal analysis of soil moisture and snow coverage variability in the Southern Highlands area, around the Cairngorms National Park (GB-SCT).
         \includegraphics[width=0.75\textwidth]{lab/scotland.jpg}
      \end{frame}
 
