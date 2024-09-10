@@ -253,8 +253,8 @@ and snow coverage in Scotland (2017-2024)}
             \includegraphics[width=\textwidth]{lab/clus_dis_2024.png}
         \end{minipage}
         \caption{Graphs based on the percentage of snow, mixture, and vegetation\\
-        \small - 2017: snow \SI{30}{\percent} ; mixture: \SI{24.5}{\percent} ; no-snow: \SI{45.4}{\percent}\\
-        \small - 2024: snow \SI{11.7}{\percent} ; mixture: \SI{31.9}{\percent} ; no-snow: \SI{53.8}{\percent}}
+        \small - 2017: snow 30\% ; mixture: 24.5\% ; no-snow: 45.4\%\\
+        \small - 2024: snow11.7\% ; mixture: 31.9\% ; no-snow: 53.8\%}
         \end{figure}
     \end{frame}
 
